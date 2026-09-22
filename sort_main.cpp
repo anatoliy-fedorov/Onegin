@@ -22,11 +22,11 @@ bool compare_address   (const void*, const void*);
 int main() {
 
     FILE* file_output = fopen("output.txt", "w");
-    char name_of_file[] = "Onegin_text.txt";
+    const char name_of_file[] = "Onegin_text.txt";
 
     file_information information = {};
-    make_struct(&information, name_of_file);
-    //void* p = calloc(10000000000, 8);
+    __init__file_info(&information, name_of_file);
+    //void* p = calloc(1000000000000, 8);
     //IS_ERROR
 
     //print_struct(&information);
@@ -44,17 +44,16 @@ int main() {
     q_sort(information.index, information.count_str, sizeof(information.index[0]), compare_address);
     print_strings(information.index, file_output, information.count_str);
 
-    free_memory(information.buffer, information.size_file, sizeof(char));
-    free_memory(information.index, information.count_str, sizeof(char*));
-
+    free(information.index);
+    free(information.buffer);
 }
 
 bool compare_up(const void* address_a, const void* address_b){
     assert(address_a);
     assert(address_b);
 
-    char* line_one = *(char**)(address_a);
-    char* line_two = *(char**)(address_b);
+    char* line_one = *(char* const*)(address_a);
+    char* line_two = *(char* const*)(address_b);
 
     size_t len_line_one = strlen(line_one);
     size_t len_line_two = strlen(line_two);
@@ -88,8 +87,8 @@ bool compare_down(const void* address_a, const void* address_b){
     assert(address_a);
     assert(address_b);
 
-    char* line_one = *(char**)(address_a);
-    char* line_two = *(char**)(address_b);
+    char* line_one = *(char* const*)(address_a);
+    char* line_two = *(char* const*)(address_b);
 
     int len_line_one = (int)strlen(line_one);
     int len_line_two = (int)strlen(line_two);
@@ -123,8 +122,8 @@ bool compare_address(const void* address_a, const void* address_b) {
     assert(address_a);
     assert(address_b);
 
-    char* line_one = *(char**)(address_a);
-    char* line_two = *(char**)(address_b);
+    char* line_one = *(char* const*)(address_a);
+    char* line_two = *(char* const*)(address_b);
 
     return line_one <= line_two;
 }

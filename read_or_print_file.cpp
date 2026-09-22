@@ -1,32 +1,33 @@
-void make_struct                     (file_information*, char*);
-void make_size_file                  (file_information*);
-void make_real_size_file             (file_information*);
-void make_count_of_strings           (file_information*, char);
-void make_index_array                (file_information*);
+void __init__file_info               (file_information*, const char*);
+void FI_set_size_file                (file_information*);
+void FI_set_real_size_file           (file_information*);
+void FI_set_count_of_strings         (file_information*);
+void FI_set_index_array              (file_information*);
 void replace_str                     (file_information*);
-void print_struct                    (file_information*);
+void FI_print_struct                 (file_information*);
 void print_strings                   (char**, FILE*, int);
 void debug_print_strings             (char**, FILE*, int);
 void print_border                    (FILE*);
 
-void make_struct(file_information* information, char* name_of_file) {
+void __init__file_info(file_information* information, const char* name_of_file) {
     assert(name_of_file);
+    assert(information);
 
     information->name_file = name_of_file;
-    make_size_file(information);
+    FI_set_size_file(information);
     information->buffer = (char*)calloc(information->size_file + 1, sizeof(char));
     IS_ERROR
-    make_real_size_file(information);
+    FI_set_real_size_file(information);
 
     *(information->buffer + information->real_file_size) = '\0';
 
-    make_count_of_strings(information, '\n');
-    make_index_array(information);
+    FI_set_count_of_strings(information);
+    FI_set_index_array(information);
     replace_str(information);
 
 }
 
-void make_size_file(file_information* information) {
+void FI_set_size_file(file_information* information) {
     assert(information);
 
     struct stat inf_file = {};
@@ -34,21 +35,21 @@ void make_size_file(file_information* information) {
     information->size_file = inf_file.st_size;
 }
 
-void make_real_size_file(file_information* information) {
+void FI_set_real_size_file(file_information* information) {
     assert(information);
 
     int descriptor = open(information->name_file, O_RDONLY);
-    IS_ERROR
+
     information->real_file_size = read(descriptor, information->buffer, (unsigned int)information->size_file);
     close(descriptor);
 }
 
-void make_count_of_strings(file_information* information, char symbol) {
+void FI_set_count_of_strings(file_information* information) {
     assert(information);
 
     int temp_count = 0;
     char* temp_address = information->buffer;
-    while ((temp_address = strchr(temp_address, symbol))) {
+    while ((temp_address = strchr(temp_address, '\n'))) {
         temp_count++;
         temp_address += 1;
     }
@@ -56,11 +57,10 @@ void make_count_of_strings(file_information* information, char symbol) {
     information->count_str = temp_count;
 }
 
-void make_index_array(file_information* information) {
+void FI_set_index_array(file_information* information) {
     assert(information);
 
     information->index = (char**)calloc(information->count_str, sizeof(char*));
-    IS_ERROR
     char* temp_address = (information->buffer);
     (information->index)[0] = temp_address;
 
@@ -81,7 +81,7 @@ void replace_str(file_information* information) {
     }
 }
 
-void print_struct(file_information* information) {
+void FI_print_struct(file_information* information) {
     assert(information);
 
     printf("name = %s\n", information->name_file);
