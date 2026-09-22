@@ -15,6 +15,7 @@ void make_struct(file_information* information, char* name_of_file) {
     information->name_file = name_of_file;
     make_size_file(information);
     information->buffer = (char*)calloc(information->size_file + 1, sizeof(char));
+    IS_ERROR
     make_real_size_file(information);
 
     *(information->buffer + information->real_file_size) = '\0';
@@ -37,9 +38,9 @@ void make_real_size_file(file_information* information) {
     assert(information);
 
     int descriptor = open(information->name_file, O_RDONLY);
-    assert(descriptor != -1);
+    IS_ERROR
     information->real_file_size = read(descriptor, information->buffer, (unsigned int)information->size_file);
-
+    close(descriptor);
 }
 
 void make_count_of_strings(file_information* information, char symbol) {
@@ -59,6 +60,7 @@ void make_index_array(file_information* information) {
     assert(information);
 
     information->index = (char**)calloc(information->count_str, sizeof(char*));
+    IS_ERROR
     char* temp_address = (information->buffer);
     (information->index)[0] = temp_address;
 

@@ -7,6 +7,9 @@
 #include <string.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <errno.h>
+
+#define IS_ERROR {if (errno != 0){printf("error in file %s line %d \n", __FILE__, __LINE__); perror("code error ");}}
 
 #include "conf.h"
 #include "read_or_print_file.cpp"
@@ -17,22 +20,26 @@ bool compare_down      (const void*, const void*);
 bool compare_address   (const void*, const void*);
 
 int main() {
-    //FILE* file_debug = fopen("debug.txt", "w");
+
     FILE* file_output = fopen("output.txt", "w");
     char name_of_file[] = "Onegin_text.txt";
 
     file_information information = {};
     make_struct(&information, name_of_file);
+    //void* p = calloc(10000000000, 8);
+    //IS_ERROR
 
     //print_struct(&information);
 
     q_sort(information.index, information.count_str, sizeof(information.index[0]), compare_up);
     print_strings(information.index, file_output, information.count_str);
     print_border(file_output);
+    IS_ERROR
 
     q_sort(information.index, information.count_str, sizeof(information.index[0]), compare_down);
     print_strings(information.index, file_output, information.count_str);
     print_border(file_output);
+    IS_ERROR
 
     q_sort(information.index, information.count_str, sizeof(information.index[0]), compare_address);
     print_strings(information.index, file_output, information.count_str);
