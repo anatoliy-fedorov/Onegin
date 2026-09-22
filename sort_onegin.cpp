@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
+#include "conf.h"
 #include "read_or_print_file.cpp"
 #include "qsort.cpp"
 
@@ -36,7 +37,8 @@ int main() {
     q_sort(information.index, information.count_str, sizeof(information.index[0]), compare_address);
     print_strings(information.index, file_output, information.count_str);
 
-
+    free_memory(information.buffer, information.size_file, sizeof(char));
+    free_memory(information.index, information.count_str, sizeof(char*));
 
 }
 

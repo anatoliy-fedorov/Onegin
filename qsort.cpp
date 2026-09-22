@@ -3,7 +3,7 @@ void quick_sort        (void*, size_t, size_t, bool (*)(const void*, const void*
 size_t partition       (void*, size_t, size_t, bool (*)(const void*, const void*), size_t);
 void* get_shift        (void*, size_t, size_t);
 void swap              (void*, void*, size_t);
-
+void free_memory       (void*, size_t, int);
 
 void q_sort(void* arr, size_t size, size_t size_of_element, bool (*compare)(const void*, const void*)) {
     assert(arr);
@@ -56,3 +56,14 @@ void swap(void* a, void* b, size_t size_of_element) {
     memcpy(a, b, size_of_element);
     memcpy(b, temp_arr, size_of_element);
 }
+
+void free_memory(void* address, size_t size, int size_element) {
+    assert(address);
+    char pvar = '/';
+
+    for(size_t i = 0; i < size * size_element; i++) {
+        memcpy((char*)address + i, &pvar, 1);
+    }
+    free(address);
+}
+

@@ -1,12 +1,3 @@
-struct file_information {
-    size_t size_file;
-    char* name_file;
-    int count_str;
-    char* buffer;
-    ssize_t real_file_size;
-    char** index;
-};
-
 void make_struct                     (file_information*, char*);
 void make_size_file                  (file_information*);
 void make_real_size_file             (file_information*);
@@ -47,7 +38,7 @@ void make_real_size_file(file_information* information) {
 
     int descriptor = open(information->name_file, O_RDONLY);
     assert(descriptor != -1);
-    information->real_file_size = read(descriptor, information->buffer, information->size_file);
+    information->real_file_size = read(descriptor, information->buffer, (unsigned int)information->size_file);
 
 }
 
