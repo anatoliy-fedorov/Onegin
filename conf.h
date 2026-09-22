@@ -5,6 +5,5 @@ struct file_information {
     char* buffer;
     ssize_t real_file_size;
     char** index;
-    size_t* array_of_lens_str;
 };
 

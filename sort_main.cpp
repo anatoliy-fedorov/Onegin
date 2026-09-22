@@ -29,7 +29,7 @@ int main() {
     //void* p = calloc(1000000000000, 8);
     //IS_ERROR
 
-    //print_struct(&information);
+    //FI_print_struct(&information);
 
     q_sort(information.index, information.count_str, sizeof(information.index[0]), compare_up);
     print_strings(information.index, file_output, information.count_str);
@@ -55,8 +55,8 @@ bool compare_up(const void* address_a, const void* address_b){
     char* line_one = *(char* const*)(address_a);
     char* line_two = *(char* const*)(address_b);
 
-    size_t len_line_one = strlen(line_one);
-    size_t len_line_two = strlen(line_two);
+    size_t len_line_one = get_len_sbefore_n(line_one);
+    size_t len_line_two = get_len_sbefore_n(line_two);
 
     size_t index_first_line = 0;
     size_t index_second_line = 0;
@@ -90,8 +90,8 @@ bool compare_down(const void* address_a, const void* address_b){
     char* line_one = *(char* const*)(address_a);
     char* line_two = *(char* const*)(address_b);
 
-    int len_line_one = (int)strlen(line_one);
-    int len_line_two = (int)strlen(line_two);
+    int len_line_one = (int)get_len_sbefore_n(line_one);
+    int len_line_two = (int)get_len_sbefore_n(line_two);
 
     int index_first_line = len_line_one - 1;
     int index_second_line = len_line_two - 1;
