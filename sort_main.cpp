@@ -41,9 +41,9 @@ int main() {
     print_border(file_output);
     IS_ERROR
 
-    q_sort(information.index, information.count_str, sizeof(information.index[0]), compare_address);
-    print_strings(information.index, file_output, information.count_str);
-
+    //q_sort(information.index, information.count_str, sizeof(information.index[0]), compare_address);
+    //print_strings(information.index, file_output, information.count_str);
+    fprintf(file_output, "%s",information.buffer);
     free(information.index);
     free(information.buffer);
 }
@@ -52,11 +52,11 @@ bool compare_up(const void* address_a, const void* address_b){
     assert(address_a);
     assert(address_b);
 
-    char* line_one = *(char* const*)(address_a);
-    char* line_two = *(char* const*)(address_b);
+    char* line_one = (*(line_info const*)(address_a)).str;
+    char* line_two = (*(line_info const*)(address_b)).str;
 
-    size_t len_line_one = get_len_sbefore_n(line_one);
-    size_t len_line_two = get_len_sbefore_n(line_two);
+    size_t len_line_one = (*(line_info const*)(address_a)).len;
+    size_t len_line_two = (*(line_info const*)(address_b)).len;
 
     size_t index_first_line = 0;
     size_t index_second_line = 0;
@@ -87,11 +87,11 @@ bool compare_down(const void* address_a, const void* address_b){
     assert(address_a);
     assert(address_b);
 
-    char* line_one = *(char* const*)(address_a);
-    char* line_two = *(char* const*)(address_b);
+    char* line_one = (*(line_info const*)(address_a)).str;
+    char* line_two = (*(line_info const*)(address_b)).str;
 
-    int len_line_one = (int)get_len_sbefore_n(line_one);
-    int len_line_two = (int)get_len_sbefore_n(line_two);
+    int len_line_one = (int)(*(line_info const*)(address_a)).len;
+    int len_line_two = (int)(*(line_info const*)(address_b)).len;
 
     int index_first_line = len_line_one - 1;
     int index_second_line = len_line_two - 1;
